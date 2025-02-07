@@ -1,31 +1,25 @@
-# Generate Insurance XML Command
+# Generate Insurance Request Command
 
-## Overview
-This Laravel command-line tool reads customer data from a JSON file, validates it, and converts it into an XML request format for the ACME insurance provider.
-
-## Features
-- Reads input from a JSON file.
-- Validates required fields.
-- Maps JSON fields to the expected XML format.
-- Saves the generated XML file to storage.
-- Provides error handling for missing files, invalid JSON, and incorrect data.
+This Laravel command generates an XML request for the ACME insurance provider based on input customer parameters from a JSON file.
 
 ## Installation
-Ensure your Laravel project is set up and dependencies are installed:
-```sh
-composer install
-```
+1. Clone the repository and navigate to the project root.
+2. Ensure Laravel is set up with dependencies installed:
+   ```sh
+   composer install
+   ```
+
 
 ## Usage
-Run the command with:
-```sh
-php artisan generate:insurance-xml {inputFile} {outputFile?}
-```
-- `inputFile` (required): Path to the JSON input file.
-- `outputFile` (optional): Path to save the generated XML file. Defaults to `insurance_request.xml`.
+1. Create a JSON file with customer data inside `storage/app/private/`.
+2. Run the command:
+   ```sh
+   php artisan generate:insurance-xml storage/app/private/input.json storage/app/private/output.xml
+   ```
+   If no output file is specified, it defaults to `insurance_request.xml`.
 
-## Example
-### JSON Input File (`input.json`)
+## Input JSON Format
+Example:
 ```json
 {
   "holder": "CONDUCTOR_PRINCIPAL",
@@ -34,48 +28,43 @@ php artisan generate:insurance-xml {inputFile} {outputFile?}
   "prevInsurance_exists": "SI"
 }
 ```
-Run the command:
-```sh
-php artisan generate:insurance-xml input.json output.xml
-```
-### Generated XML Output (`output.xml`)
-```xml
-<TarificacionThirdPartyRequest>
-    <Datos>
-        <DatosGenerales>
-            <CondPpalEsTomador>S</CondPpalEsTomador>
-            <ConductorUnico>S</ConductorUnico>
-            <FecCot>2025-02-07T12:00:00</FecCot>
-            <AnosSegAnte>5</AnosSegAnte>
-            <NroCondOca>0</NroCondOca>
-            <SeguroEnVigor>S</SeguroEnVigor>
-        </DatosGenerales>
-    </Datos>
-</TarificacionThirdPartyRequest>
-```
 
 ## Validation Rules
-- `holder`: Required, must be either `CONDUCTOR_PRINCIPAL` or `OTHER`.
-- `occasionalDriver`: Required, must be `SI` or `NO`.
-- `prevInsurance_years`: Optional, must be an integer.
-- `prevInsurance_exists`: Required, must be `SI` or `NO`.
+- `holder`: required, allowed values: `CONDUCTOR_PRINCIPAL`, `OTHER`
+- `occasionalDriver`: required, allowed values: `SI`, `NO`
+- `prevInsurance_years`: optional, integer
+- `prevInsurance_exists`: required, allowed values: `SI`, `NO`
 
 ## Error Handling
-- If the file does not exist, the command outputs: `File not found: {inputFile}`.
-- If the JSON format is invalid, the command outputs: `Invalid JSON format.`
-- If validation fails, it outputs: `Invalid input data.` along with specific errors.
+- Displays an error if the input file is missing or invalid JSON.
+- Displays validation errors if data is incorrect.
 
-## Running Tests
-This project includes feature tests to ensure functionality:
+## Testing
+Run the test suite:
 ```sh
 php artisan test
 ```
-### Test Cases
-1. **Fails when file does not exist.**
-2. **Fails when JSON is invalid.**
-3. **Fails when input data is invalid.**
-4. **Generates XML successfully with valid data.**
+The tests cover:
+- Missing file handling
+- Invalid JSON handling
+- Validation failures
+- Successful XML generation
 
-## License
-This project is licensed under the MIT License.
+## Output XML Example
+```xml
+<TarificacionThirdPartyRequest>
+  <Datos>
+    <DatosGenerales>
+      <CondPpalEsTomador>S</CondPpalEsTomador>
+      <ConductorUnico>S</ConductorUnico>
+      <FecCot>2025-02-07T12:00:00</FecCot>
+      <AnosSegAnte>5</AnosSegAnte>
+      <NroCondOca>0</NroCondOca>
+      <SeguroEnVigor>S</SeguroEnVigor>
+    </DatosGenerales>
+  </Datos>
+</TarificacionThirdPartyRequest>
+```
+
+Ensure the JSON file is placed in `storage/app/private/` before running the command.
 
