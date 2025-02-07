@@ -8,11 +8,18 @@ This Laravel command generates an XML request for the ACME insurance provider ba
    ```sh
    composer install
    ```
+3. Copy the `.env.example` file to `.env` and configure the necessary environment variables:
+   ```sh
+   cp .env.example .env
+   ```
+4. Generate the application key:
+   ```sh
+   php artisan key:generate
+   ```
 
 
 ## Usage
 1. Create a JSON file with customer data inside `storage/app/private/`.
-
 ## Input JSON Format
 Example:
 ```json
@@ -28,6 +35,7 @@ Example:
    php artisan generate:insurance-xml input.json output.xml
    ```
    If no output file is specified, it defaults to `insurance_request.xml`.
+
 
 ## Validation Rules
 - `holder`: required, allowed values: `CONDUCTOR_PRINCIPAL`, `OTHER`
@@ -67,4 +75,6 @@ The tests cover:
 ```
 
 Ensure the JSON file is placed in `storage/app/private/` before running the command.
+
+If you clone the project, make sure to create an `.env` file as it is not included in the repository.
 
