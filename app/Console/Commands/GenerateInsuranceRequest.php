@@ -32,7 +32,7 @@ class GenerateInsuranceRequest extends Command
         $validator = Validator::make($inputData, [
             'holder' => 'required|in:CONDUCTOR_PRINCIPAL,OTHER',
             'occasionalDriver' => 'required|in:SI,NO',
-            'prevInsurance_years' => 'nullable|integer',
+            'prevInsurance_years' => 'required|integer',
             'prevInsurance_exists' => 'required|in:SI,NO',
         ]);
 
@@ -63,7 +63,7 @@ class GenerateInsuranceRequest extends Command
      * | holder                | CondPpalEsTomador       | 'S' if value is 'CONDUCTOR_PRINCIPAL'; otherwise 'N'.                    |
      * | occasionalDriver      | ConductorUnico          | 'S' if value is 'NO'; otherwise 'N'.                                     |
      * | FecCot (current time) | FecCot                  | Automatically set to the current date and time.                        |
-     * | prevInsurance_years   | AnosSegAnte             | Directly mapped (nullable integer).                                      |
+     * | prevInsurance_years   | AnosSegAnte             | Directly mapped (integer).                                      |
      * | occasionalDriver      | NroCondOca              | '1' if value is 'SI'; otherwise '0'.                                     |
      * | prevInsurance_exists  | SeguroEnVigor           | 'S' if value is 'SI'; otherwise 'N'.                                     |
      *
