@@ -12,11 +12,6 @@ This Laravel command generates an XML request for the ACME insurance provider ba
 
 ## Usage
 1. Create a JSON file with customer data inside `storage/app/private/`.
-2. Run the command:
-   ```sh
-   php artisan generate:insurance-xml storage/app/private/input.json storage/app/private/output.xml
-   ```
-   If no output file is specified, it defaults to `insurance_request.xml`.
 
 ## Input JSON Format
 Example:
@@ -28,6 +23,11 @@ Example:
   "prevInsurance_exists": "SI"
 }
 ```
+2. Run the command:
+   ```sh
+   php artisan generate:insurance-xml input.json output.xml
+   ```
+   If no output file is specified, it defaults to `insurance_request.xml`.
 
 ## Validation Rules
 - `holder`: required, allowed values: `CONDUCTOR_PRINCIPAL`, `OTHER`
