@@ -62,4 +62,27 @@ class GenerateInsuranceRequestTest extends TestCase
 
         Storage::assertExists('insurance_request.xml');
     }
+    public function test_generated_xml_structure_is_correct()
+    {
+        $validData = json_encode([
+            'holder' => 'CONDUCTOR_PRINCIPAL',
+            'occasionalDriver' => 'NO',
+            'prevInsurance_years' => 5,
+            'prevInsurance_exists' => 'SI',
+        ]);
+
+        Storage::put('valid_data.json', $validData);
+
+        $this->artisan('generate:insurance-xml valid_data.json')
+            ->assertExitCode(0);
+
+        $xmlContent = Storage::get('insurance_request.xml');
+        $xml = simplexml_load_string($xmlContent)->Datos;
+
+
+        $this->assertEquals('S', (string) $xml->DatosGenerales->CondPpalEsTomador, "Main driver mapping is incorrect");
+        $this->assertEquals('S', (string) $xml->DatosGenerales->ConductorUnico, "Single driver mapping is incorrect");
+        $this->assertEquals(5, (int) $xml->DatosGenerales->AnosSegAnte, "Previous insurance years mapping is incorrect");
+        $this->assertEquals('S', (string) $xml->DatosGenerales->SeguroEnVigor, "Existing insurance mapping is incorrect");
+    }
 }
