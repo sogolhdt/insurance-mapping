@@ -40,7 +40,7 @@ Example:
 ## Validation Rules
 - `holder`: required, allowed values: `CONDUCTOR_PRINCIPAL`, `OTHER`
 - `occasionalDriver`: required, allowed values: `SI`, `NO`
-- `prevInsurance_years`: optional, integer
+- `prevInsurance_years`: required, integer
 - `prevInsurance_exists`: required, allowed values: `SI`, `NO`
 
 ## Error Handling
